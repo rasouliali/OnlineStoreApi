@@ -14,7 +14,7 @@ public class ProductDto:IMapFrom<Product>
 {
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Size, ProductDto>().ReverseMap();
+        //profile.CreateMap<Size, ProductDto>().ReverseMap();
     }
 
     [Description("Id")]

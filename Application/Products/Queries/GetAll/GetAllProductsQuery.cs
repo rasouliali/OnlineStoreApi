@@ -10,7 +10,6 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Domain.Enums;
-using Application.Products.DTOs;
 
 namespace OnlineStoreApi.Application.Products.Queries.GetAll;
 

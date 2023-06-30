@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Products.DTOs
+namespace OnlineStoreApi.Application.Products.DTOs
 {
     public class ProductVm
     {
