@@ -12,9 +12,11 @@ using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Application.Common.Exceptions;
 using OnlineStoreApi.Domain.Enums;
 using Microsoft.AspNetCore.Http;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Products.Commands.AddEdit;
 
+[Authorize]
 public class AddEditProductCommand : IRequest<int>,IMapFrom<Product>
 {
 

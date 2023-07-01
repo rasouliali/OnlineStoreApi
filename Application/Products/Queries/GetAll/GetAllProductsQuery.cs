@@ -11,9 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Domain.Enums;
 using Application.Products.Commands.Helper;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Products.Queries.GetAll;
 
+[Authorize]
 public class GetAllProductsQuery : IRequest<ProductVm>
 {
     private float _dollarPrice;

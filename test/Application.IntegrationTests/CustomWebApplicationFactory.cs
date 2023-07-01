@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+using OnlineStoreApi.WebAPI;
 
 namespace OnlineStoreApi.Application.IntegrationTests;
 
@@ -14,6 +14,7 @@ using static Testing;
 
 internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration(configurationBuilder =>

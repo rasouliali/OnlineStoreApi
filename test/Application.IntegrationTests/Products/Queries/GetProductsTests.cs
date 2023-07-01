@@ -4,6 +4,8 @@ using NUnit.Framework;
 using OnlineStoreApi.Application.IntegrationTests;
 using OnlineStoreApi.Application.Products.Queries.GetAll;
 using OnlineStoreApi.Application.Products.Commands.AddEdit;
+using OnlineStoreApi.Application.Colors.Commands.AddEdit;
+using OnlineStoreApi.Application.Sizes.Commands.AddEdit;
 
 namespace OnlineStoreApi.Application.IntegrationTests.Products.Queries;
 
@@ -24,16 +26,21 @@ public class GetProductsTests : BaseTestFixture
     }
 
     [Test]
-    public async Task ShouldReturnAllListsAndItems()
+    public async Task ShouldReturnAll()
     {
         await RunAsDefaultUserAsync();
+
+        var colorid = await SendAsync(new AddEditColorCommand { Name = "White", ColorCode = "#FFFFFF" });
+        //colorid.Should().BePositive();
+        var sizeid = await SendAsync(new AddEditSizeCommand { Name = "small" });
+        //sizeid.Should().BePositive();
 
         await AddAsync(new Product
         {
             Name = "My Product",
-            ColorId = 1,
-            SizeId = 2,
-            Price = 1,
+            ColorId = colorid,
+            SizeId = sizeid,
+            Price = 15000,
             PriceType = (Domain.Enums.PriceType)1,
             DiscountAmount = 0,
             DiscountExpireAt = null,

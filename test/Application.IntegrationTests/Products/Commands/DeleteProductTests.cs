@@ -4,6 +4,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using OnlineStoreApi.Application.Products.Commands.Delete;
 using OnlineStoreApi.Application.Products.Commands.AddEdit;
+using OnlineStoreApi.Application.Colors.Commands.AddEdit;
+using OnlineStoreApi.Application.Sizes.Commands.AddEdit;
 
 namespace OnlineStoreApi.Application.IntegrationTests.TodoItems.Commands;
 
@@ -14,6 +16,7 @@ public class DeleteProductTests : BaseTestFixture
     [Test]
     public async Task ShouldRequireValidProduct()
     {
+        var userId = await RunAsDefaultUserAsync();
         var command = new DeleteProductCommand() ;
         command.Id = 99;
 
@@ -25,11 +28,16 @@ public class DeleteProductTests : BaseTestFixture
     public async Task ShouldDeleteTodoItem()
     {
 
+        var userId = await RunAsDefaultUserAsync();
+        var colorid = await SendAsync(new AddEditColorCommand { Name = "White", ColorCode = "#FFFFFF" });
+        //colorid.Should().BePositive();
+        var sizeid = await SendAsync(new AddEditSizeCommand { Name = "small" });
+        //sizeid.Should().BePositive();
         var itemId = await SendAsync(new AddEditProductCommand
         {
             Name = "New Product 3",
-            SizeId = 2,
-            ColorId = 1,
+            SizeId = sizeid,
+            ColorId = colorid,
             Price = 1,
             PriceType = 1,
             DiscountAmount = 0,

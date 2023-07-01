@@ -5,10 +5,13 @@ using MediatR;
 using OnlineStoreApi.Application.Common.Interfaces;
 using AutoMapper;
 using OnlineStoreApi.Domain.Events;
+using OnlineStoreApi.Application.Common.Security;
+using OnlineStoreApi.Application.Common.Exceptions;
 
 namespace OnlineStoreApi.Application.Products.Commands.Delete;
 
-    public class DeleteProductCommand : IRequest<int>
+[Authorize]
+public class DeleteProductCommand : IRequest<int>
 {
       public int Id { get; set; }
     }
@@ -31,7 +34,7 @@ namespace OnlineStoreApi.Application.Products.Commands.Delete;
             var item = await _context.Products.FindAsync(request.Id);
             if(item == null )
             {
-                return 0;
+                throw new NotFoundException();
             }
 			item.AddDomainEvent(new ProductDeletedEvent(item));
             _context.Products.Remove(item);

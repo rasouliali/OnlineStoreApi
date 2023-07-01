@@ -12,14 +12,16 @@ using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Application.Common.Exceptions;
 using OnlineStoreApi.Domain.Enums;
 using Microsoft.AspNetCore.Http;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Colors.Commands.AddEdit;
 
-public class AddEditColorCommand : IRequest<int>, IMapFrom<Size>
+[Authorize]
+public class AddEditColorCommand : IRequest<int>, IMapFrom<Color>
 {
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Color, ColorDto>().ReverseMap();
+        profile.CreateMap<Color, AddEditColorCommand>().ReverseMap();
     }
     [Description("Id")]
     public int Id { get; set; }
@@ -44,17 +46,16 @@ public class AddEditColorCommand : IRequest<int>, IMapFrom<Size>
         public async Task<int> Handle(AddEditColorCommand request, CancellationToken cancellationToken)
         {
             // TODO: Implement AddEditColorCommandHandler method 
-            var dto = _mapper.Map<ColorDto>(request);
             if (request.Id > 0)//edit
             {
                 var item = await _context.Colors.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"Color with id: [{request.Id}] not found.");
-                item = _mapper.Map(dto, item);
+                item = _mapper.Map(request, item);
                 var res = await _context.SaveChangesAsync(cancellationToken);
                 return item.Id;
             }
             else
             {
-                var item = _mapper.Map<Color>(dto);
+                var item = _mapper.Map<Color>(request);
                 _context.Colors.Add(item);
                 await _context.SaveChangesAsync(cancellationToken);
                 return item.Id;

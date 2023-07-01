@@ -6,10 +6,12 @@ using OnlineStoreApi.Application.Common.Interfaces;
 using AutoMapper;
 using OnlineStoreApi.Domain.Events;
 using OnlineStoreApi.Application.Common.Exceptions;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Colors.Commands.Delete;
 
-    public class DeleteColorCommand : IRequest<int>
+[Authorize]
+public class DeleteColorCommand : IRequest<int>
 {
       public int Id {  get; }
     }

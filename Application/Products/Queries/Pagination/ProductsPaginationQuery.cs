@@ -12,9 +12,11 @@ using AutoMapper.QueryableExtensions;
 using OnlineStoreApi.Application.Common.Mappings;
 using OnlineStoreApi.Domain.Enums;
 using Application.Products.Commands.Helper;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Products.Queries.Pagination;
 
+[Authorize]
 public class GetProductsWithPaginationQuery : IRequest<PaginatedList<ProductDto>>
 {
     public string? Keyword { get; set; }

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using OnlineStoreApi.Application.Common.Exceptions;
 using OnlineStoreApi.Application.Common.Interfaces;
+using OnlineStoreApi.Application.Common.Security;
 using OnlineStoreApi.Application.Products.DTOs;
 using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Domain.Events;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace Application.Products.Commands.UploadFile
 {
+[Authorize]
     public class UploadFileCommand : IRequest<int>
     {
 

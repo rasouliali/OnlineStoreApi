@@ -7,9 +7,11 @@ using AutoMapper;
 using OnlineStoreApi.Application.Common.Interfaces;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Colors.Queries.GetAll;
 
+[Authorize]
 public class GetAllColorsQuery : IRequest<List<ColorDto>>
 {
 }

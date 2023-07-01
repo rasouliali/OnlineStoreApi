@@ -12,14 +12,16 @@ using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Application.Common.Exceptions;
 using OnlineStoreApi.Domain.Enums;
 using Microsoft.AspNetCore.Http;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Sizes.Commands.AddEdit;
 
+[Authorize]
 public class AddEditSizeCommand : IRequest<int>, IMapFrom<Size>
 {
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Size, SizeDto>().ReverseMap();
+        profile.CreateMap<Size, AddEditSizeCommand>().ReverseMap();
     }
 
     [Description("Id")]
@@ -43,17 +45,16 @@ public class AddEditSizeCommand : IRequest<int>, IMapFrom<Size>
         public async Task<int> Handle(AddEditSizeCommand request, CancellationToken cancellationToken)
         {
             // TODO: Implement AddEditSizeCommandHandler method 
-            var dto = _mapper.Map<SizeDto>(request);
             if (request.Id > 0)//edit
             {
                 var item = await _context.Sizes.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"Size with id: [{request.Id}] not found.");
-                item = _mapper.Map(dto, item);
+                item = _mapper.Map(request, item);
                 var res = await _context.SaveChangesAsync(cancellationToken);
                 return item.Id;
             }
             else
             {
-                var item = _mapper.Map<Size>(dto);
+                var item = _mapper.Map<Size>(request);
                 _context.Sizes.Add(item);
                 await _context.SaveChangesAsync(cancellationToken);
                 return item.Id;

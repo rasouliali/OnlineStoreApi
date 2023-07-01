@@ -3,6 +3,8 @@ using OnlineStoreApi.Domain.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using OnlineStoreApi.Application.Products.Commands.AddEdit;
+using OnlineStoreApi.Application.Colors.Commands.AddEdit;
+using OnlineStoreApi.Application.Sizes.Commands.AddEdit;
 
 namespace OnlineStoreApi.Application.IntegrationTests.TodoItems.Commands;
 
@@ -13,6 +15,7 @@ public class AddProductTests : BaseTestFixture
     [Test]
     public async Task ShouldRequireMinimumFields()
     {
+        var userId = await RunAsDefaultUserAsync();
         var command = new AddEditProductCommand();
 
         await FluentActions.Invoking(() =>
@@ -21,11 +24,17 @@ public class AddProductTests : BaseTestFixture
     [Test]
     public async Task ShouldBeGreaterThanZero()
     {
+        var userId = await RunAsDefaultUserAsync();
+
+        var colorid = await SendAsync(new AddEditColorCommand { Name = "White", ColorCode = "#FFFFFF" });
+        //colorid.Should().BePositive();
+        var sizeid = await SendAsync(new AddEditSizeCommand { Name = "small" });
+        //sizeid.Should().BePositive();
         var command = new AddEditProductCommand
         {
             Name = "prod",
-            SizeId = 2,
-            ColorId = 1,
+            SizeId = sizeid,
+            ColorId = colorid,
             Price = 15000,
             PriceType = 0,
             DiscountAmount = 0,

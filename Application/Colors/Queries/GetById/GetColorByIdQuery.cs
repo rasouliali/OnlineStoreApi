@@ -8,8 +8,10 @@ using AutoMapper;
 using OnlineStoreApi.Application.Common.Exceptions;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Colors.Queries.GetById;
+[Authorize]
 public class GetColorByIdQuery : IRequest<ColorDto>
 {
     public int Id { get; set; }

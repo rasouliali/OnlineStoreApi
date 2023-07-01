@@ -10,8 +10,10 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using OnlineStoreApi.Domain.Enums;
 using Application.Products.Commands.Helper;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Products.Queries.GetById;
+[Authorize]
 public class GetProductByIdQuery : IRequest<ProductDto>
 {
 

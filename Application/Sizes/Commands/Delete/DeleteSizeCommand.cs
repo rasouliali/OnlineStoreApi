@@ -6,10 +6,12 @@ using OnlineStoreApi.Application.Common.Interfaces;
 using AutoMapper;
 using OnlineStoreApi.Domain.Events;
 using OnlineStoreApi.Application.Common.Exceptions;
+using OnlineStoreApi.Application.Common.Security;
 
 namespace OnlineStoreApi.Application.Sizes.Commands.Delete;
 
-    public class DeleteSizeCommand : IRequest<int>
+[Authorize]
+public class DeleteSizeCommand : IRequest<int>
 {
       public int Id {  get; }
     }
