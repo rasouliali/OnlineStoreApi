@@ -346,7 +346,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("ImagePath")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 

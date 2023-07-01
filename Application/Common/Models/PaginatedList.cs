@@ -28,4 +28,9 @@ public class PaginatedList<T>
 
         return new PaginatedList<T>(items, count, pageNumber, pageSize);
     }
+
+    internal void ForEach(Action<object> value)
+    {
+        throw new NotImplementedException();
+    }
 }

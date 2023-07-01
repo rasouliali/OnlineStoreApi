@@ -12,8 +12,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasMaxLength(200)
             .IsRequired();
         builder.Property(t => t.ImagePath)
-            .HasMaxLength(200)
-            .IsRequired();
+            .HasMaxLength(200);
         builder.Property(t => t.CreatedBy)
             .HasMaxLength(200)
             .IsRequired();

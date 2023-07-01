@@ -15,8 +15,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace OnlineStoreApi.Application.Colors.Commands.AddEdit;
 
-public class AddEditColorCommand : IRequest<int>
+public class AddEditColorCommand : IRequest<int>, IMapFrom<Size>
 {
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Color, ColorDto>().ReverseMap();
+    }
     [Description("Id")]
     public int Id { get; set; }
     [Description("Name")]

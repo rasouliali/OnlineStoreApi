@@ -10,11 +10,21 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using OnlineStoreApi.Domain.Entities;
 using OnlineStoreApi.Domain.Enums;
+using Application.Products.Commands.Helper;
 
 namespace OnlineStoreApi.Application.Products.Queries.GetAll;
 
 public class GetAllProductsQuery : IRequest<ProductVm>
 {
+    private float _dollarPrice;
+    public void SetDollarPrice(float dollarPrice)
+    {
+        _dollarPrice = dollarPrice;
+    }
+    public float GetDollarPrice()
+    {
+        return _dollarPrice;
+    }
 }
 
 public class GetProductsWithPaginationQueryHandler : IRequestHandler<GetAllProductsQuery, ProductVm>
@@ -37,6 +47,12 @@ public class GetProductsWithPaginationQueryHandler : IRequestHandler<GetAllProdu
          .OrderBy(x => x.Name)
          .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
          .ToListAsync();
+
+        data.ForEach(r =>
+        {
+            FinalPriceCalc.Do(r, request.GetDollarPrice());
+            r.Images = (r.ImagePath??"").Split("^").Select(s => "/img/" + s).ToList();
+        });
 
         return new ProductVm
         {

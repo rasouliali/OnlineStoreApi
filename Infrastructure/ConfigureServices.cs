@@ -22,7 +22,7 @@ public static class ConfigureServices
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("CleanArchitectureDb"));
+                options.UseInMemoryDatabase("OnlineStoreApiDb"));
         }
         else
         {

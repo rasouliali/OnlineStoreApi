@@ -7,6 +7,7 @@ using OnlineStoreApi.Application.Colors.Queries.GetAll;
 using OnlineStoreApi.Application.Colors.Queries.GetById;
 using OnlineStoreApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,23 +34,23 @@ namespace OnlineStoreApi.WebAPI.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] AddEditColorCommand query)
+        public async Task<ActionResult<int>> Post([FromBody] AddEditColorCommand command)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(command);
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Put(int id, [FromBody] AddEditColorCommand query)
+        public async Task<ActionResult<int>> Put(int id, [FromBody] AddEditColorCommand command)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(command);
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(DeleteColorCommand query)
+        public async Task Delete(DeleteColorCommand command)
         {
-            await Mediator.Send(query);
+            await Mediator.Send(command);
         }
     }
 }

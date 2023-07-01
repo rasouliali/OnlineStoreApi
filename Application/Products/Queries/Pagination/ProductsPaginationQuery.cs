@@ -10,6 +10,8 @@ using OnlineStoreApi.Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using OnlineStoreApi.Application.Common.Mappings;
+using OnlineStoreApi.Domain.Enums;
+using Application.Products.Commands.Helper;
 
 namespace OnlineStoreApi.Application.Products.Queries.Pagination;
 
@@ -17,7 +19,17 @@ public class GetProductsWithPaginationQuery : IRequest<PaginatedList<ProductDto>
 {
     public string? Keyword { get; set; }
     public int PageNumber { get; init; } = 1;
-    public int PageSize { get; init; } = 10;
+    public int PageSize { get; init; } = 10; 
+
+    private float _dollarPrice;
+    public void SetDollarPrice(float dollarPrice)
+    {
+        _dollarPrice = dollarPrice;
+    }
+    public float GetDollarPrice()
+    {
+        return _dollarPrice;
+    }
 }
     
 public class GetProductsWithPaginationQueryHandler : IRequestHandler<GetProductsWithPaginationQuery, PaginatedList<ProductDto>>
@@ -34,13 +46,19 @@ public class GetProductsWithPaginationQueryHandler : IRequestHandler<GetProducts
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<ProductDto>> Handle(GetProductsWithPaginationQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<ProductDto>> Handle(GetProductsWithPaginationQuery request, CancellationToken cancellationToken)
+    {
+        // TODO: Implement ProductsWithPaginationQueryHandler method 
+        var data = await _context.Products.Where(x => string.IsNullOrEmpty(request.Keyword)==true || x.Name.Contains(request.Keyword))
+         .OrderBy(x => x.Name)
+         .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+         .PaginatedListAsync(request.PageNumber, request.PageSize);
+        data.Items.ToList().ForEach(r =>
         {
-           // TODO: Implement ProductsWithPaginationQueryHandler method 
-           var data = await _context.Products.Where(x=>x.Name.Contains(request.Keyword))
-            .OrderBy(x => x.Name)
-            .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+            FinalPriceCalc.Do(r, request.GetDollarPrice());
+            r.Images = (r.ImagePath??"").Split("^").Select(s=> "/img/" +s).ToList();
+        }); 
+
         return data;
-        }
+    }
 }

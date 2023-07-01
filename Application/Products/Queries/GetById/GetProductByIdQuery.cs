@@ -8,12 +8,23 @@ using AutoMapper;
 using OnlineStoreApi.Application.Common.Exceptions;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using OnlineStoreApi.Domain.Enums;
+using Application.Products.Commands.Helper;
 
 namespace OnlineStoreApi.Application.Products.Queries.GetById;
 public class GetProductByIdQuery : IRequest<ProductDto>
 {
 
     public int Id { get; set; }
+    private float _dollarPrice;
+    public void SetDollarPrice(float dollarPrice)
+    {
+        _dollarPrice = dollarPrice;
+    }
+    public float GetDollarPrice()
+    {
+        return _dollarPrice;
+    }
 }
 
 public class GetProductByIdQueryHandler :
@@ -37,6 +48,11 @@ public class GetProductByIdQueryHandler :
         var data = await _context.Products.Where(r => r.Id == request.Id)
                      .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                      .FirstAsync(cancellationToken) ?? throw new NotFoundException($"Product with id: [{request.Id}] not found."); ;
+
+        FinalPriceCalc.Do(data, request.GetDollarPrice());
+        data.Images = (data.ImagePath??"").Split("^").Select(s => "/img/" + s).ToList();
+
+
         return data;
     }
 }

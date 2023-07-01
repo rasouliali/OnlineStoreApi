@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Products.Commands.UploadFile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using OnlineStoreApi.Application.Common.Models;
 using OnlineStoreApi.Application.Products.Commands.AddEdit;
 using OnlineStoreApi.Application.Products.Commands.Delete;
@@ -18,46 +20,66 @@ namespace OnlineStoreApi.WebAPI.Controllers
     [ApiController]
     public class ProductsController : ApiControllerBase
     {
+        float _dollarPrice;
+        string _uploadPath;
+        public ProductsController(IConfiguration config, IWebHostEnvironment env)
+        {
+            _uploadPath = Path.Combine(env.ContentRootPath, "wwwroot", "img");
+            _dollarPrice = config.GetValue<float>("DollarPriceToman");
+        }
         // GET: api/<ValuesController>
         [HttpGet]
-        public async Task<ActionResult<ProductVm>> Get()
+        public async Task<ActionResult<ProductVm>> Get([FromQuery] GetAllProductsQuery query)
         {
-            var query = new GetAllProductsQuery();
+            query.SetDollarPrice(_dollarPrice);
             return await Mediator.Send(query);
         }
         // GET: api/<ValuesController>
         [HttpGet("GetPagination")]
-        public async Task<ActionResult<PaginatedList<ProductDto>>> GetPagination(GetProductsWithPaginationQuery query)
+        public async Task<ActionResult<PaginatedList<ProductDto>>> GetPagination([FromQuery] GetProductsWithPaginationQuery query)
         {
+            query.SetDollarPrice(_dollarPrice);
             return await Mediator.Send(query);
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDto>> Get(GetProductByIdQuery query)
+        public async Task<ActionResult<ProductDto>> Get([FromQuery] GetProductByIdQuery query)
         {
+            query.SetDollarPrice(_dollarPrice);
             return await Mediator.Send(query);
         }
 
         // POST api/<ValuesController>
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] AddEditProductCommand query)
+        public async Task<ActionResult<int>> Post([FromBody] AddEditProductCommand command)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(command);
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Put(int id, [FromBody] AddEditProductCommand query)
+        public async Task<ActionResult<int>> Put(int id, [FromBody] AddEditProductCommand command)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(command);
+        }
+
+        //POST api/<ValuesController>/5
+        [HttpPost("UploadFiles/{id}")]
+        public async Task<ActionResult<int>> UploadFiles(int id, IFormFile[] fileUploads)
+        {
+            UploadFileCommand command = new UploadFileCommand();
+            command.Id = id;
+            command.Files = fileUploads;
+            command.RootPath = _uploadPath;
+            return await Mediator.Send(command);
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(DeleteProductCommand query)
+        public async Task Delete(DeleteProductCommand command)
         {
-            await Mediator.Send(query);
+            await Mediator.Send(command);
         }
     }
 }

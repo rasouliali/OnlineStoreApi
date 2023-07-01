@@ -14,7 +14,7 @@ public class SizeDto : IMapFrom<Size>
 {
     public void Mapping(Profile profile)
     {
-        //profile.CreateMap<Size, SizeDto>().ReverseMap();
+        profile.CreateMap<Size, SizeDto>().ReverseMap();
     }
 
     [Description("Id")]

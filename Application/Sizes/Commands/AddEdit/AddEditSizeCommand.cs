@@ -15,8 +15,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace OnlineStoreApi.Application.Sizes.Commands.AddEdit;
 
-public class AddEditSizeCommand : IRequest<int>
+public class AddEditSizeCommand : IRequest<int>, IMapFrom<Size>
 {
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Size, SizeDto>().ReverseMap();
+    }
+
     [Description("Id")]
     public int Id { get; set; }
     [Description("Name")]

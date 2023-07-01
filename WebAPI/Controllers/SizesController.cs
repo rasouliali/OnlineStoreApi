@@ -19,38 +19,37 @@ namespace OnlineStoreApi.WebAPI.Controllers
     {
         // GET: api/<ValuesController>
         [HttpGet]
-        public async Task<ActionResult<List<SizeDto>>> Get()
+        public async Task<ActionResult<List<SizeDto>>> Get([FromQuery] GetAllSizesQuery query)
         {
-            var query = new GetAllSizesQuery();
             return await Mediator.Send(query);
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SizeDto>> Get(GetSizeByIdQuery query)
+        public async Task<ActionResult<SizeDto>> Get([FromQuery] GetSizeByIdQuery query)
         {
             return await Mediator.Send(query);
         }
 
         // POST api/<ValuesController>
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] AddEditSizeCommand query)
+        public async Task<ActionResult<int>> Post([FromBody] AddEditSizeCommand command)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(command);
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> Put(int id, [FromBody] AddEditSizeCommand query)
+        public async Task<ActionResult<int>> Put(int id, [FromBody] AddEditSizeCommand command)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(command);
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(DeleteSizeCommand query)
+        public async Task Delete(DeleteSizeCommand command)
         {
-            await Mediator.Send(query);
+            await Mediator.Send(command);
         }
     }
 }

@@ -32,6 +32,11 @@
 	</ItemGroup>
 
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\img\" />
+	</ItemGroup>
+
+
 
 
 

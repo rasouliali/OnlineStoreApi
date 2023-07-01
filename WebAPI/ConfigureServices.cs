@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using OnlineStoreApi.Application.Common.Interfaces;
 using OnlineStoreApi.Infrastructure.Persistence;
+using OnlineStoreApi.WebAPI.Filters;
 using OnlineStoreApi.WebAPI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -41,7 +42,7 @@ public static class ConfigureServices
 
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "PersonManager.UI", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnlineStoreApi.WebAPI", Version = "v1" });
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = @"JWT Authorization header using the Bearer scheme. 
@@ -71,6 +72,8 @@ public static class ConfigureServices
                         new List<string>()
                       }
                     });
+            c.OperationFilter<FileUploadFilter>();
+
 
         });
 
@@ -81,7 +84,7 @@ public static class ConfigureServices
         //    // Add the fluent validations schema processor
         //    configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
 
-        //    configure.Title = "CleanArchitecture API";
+        //    configure.Title = "OnlineStoreApi API";
         //    configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
         //    {
         //        Type = OpenApiSecuritySchemeType.ApiKey,
@@ -99,7 +102,7 @@ public static class ConfigureServices
         //    // Add the fluent validations schema processor
         //    configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
 
-        //    configure.Title = "CleanArchitecture API";
+        //    configure.Title = "OnlineStoreApi API";
         //    configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
         //    {
         //        Type = OpenApiSecuritySchemeType.ApiKey,

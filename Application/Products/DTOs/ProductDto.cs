@@ -6,6 +6,8 @@ using OnlineStoreApi.Application.Common.Mappings;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Http;
 using AutoMapper;
+using OnlineStoreApi.Domain.Enums;
+using System.Reflection.Metadata.Ecma335;
 
 namespace OnlineStoreApi.Application.Products.DTOs;
 
@@ -14,7 +16,8 @@ public class ProductDto:IMapFrom<Product>
 {
     public void Mapping(Profile profile)
     {
-        //profile.CreateMap<Size, ProductDto>().ReverseMap();
+        profile.CreateMap<Product, ProductDto>().ReverseMap();
+        
     }
 
     [Description("Id")]
@@ -26,12 +29,13 @@ public class ProductDto:IMapFrom<Product>
     [Description("Color Id")]
     public int ColorId { get; set; }
     [Description("Price Type (0=Constant,1=Formula)")]
-    public string? PriceType { get; set; }
+    public PriceType PriceType { get; set; }
     [Description("Price")]
     public float Price { get; set; }
+    public float FinalPrice { get; set; }
     [Description("List Of Images")]
-    public List<IFormFile> Images { get; set; }
-    public List<string> ImageList { get; set; }
+    public List<string> Images { get; set; }
+    public string ImagePath { get; set; }
     [Description("Discount Amount")]
     public float? DiscountAmount { get; set; }
     [Description("Discount Expire At")]
